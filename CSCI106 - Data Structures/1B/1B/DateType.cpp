@@ -1,0 +1,525 @@
+// Define member functions of class DateType.
+// This is file DateType.cpp.
+
+#include "DateType.h" // gain access to specification of class
+#include <iostream>
+using namespace std;
+
+//The first constructor method to initialize a DateType object
+//  initialize day, month, year in the object
+//  to 1, 1, and 2000 representing 1/1/2000
+DateType::DateType()
+{
+    
+  year = 2000;
+  month = 1;
+  day = 1;
+    
+}
+
+//The second constructor method to initialize a DateType object
+//Check whether newMonth, newDay, newYear compose a valid date first.
+//If they do Not compose a valid date,
+//  initialize day, month, year in the object
+//  to 1, 1, and 2000 representing 1/1/2000
+//If they do compose a valid date,
+//   use newMonth, newDay, newYear to update day, month, year in the object,
+DateType::DateType(int newMonth, int newDay, int newYear)
+{
+
+    if (IsValidDate(newMonth, newDay, newYear)==true)
+        
+    {
+        
+        year=newYear;
+        month= newMonth;
+        day=newDay;
+        
+    }
+    
+        else
+            
+        {
+            year=2000;
+            day=1;
+            month=1;
+        }
+    
+}
+
+//A method to set a new date for the DateType object.
+//Check whether newMonth, newDay, newYear compose a valid date first.
+//If they do Not compose a valid date,
+//   do not change the date stored in the object and then return false.
+//If they do compose a valid date,
+//   use newMonth, newDay, newYear to update day, month, year in the object,
+//   and then return true.
+bool DateType::SetDate(int newMonth, int newDay, int newYear)
+{
+    
+    // if the setdate in the main.cpp is wrong then this it will say it's invalid
+    // then it will ask us to input a valid date
+    if (IsValidDate(newMonth, newDay,newYear)==false)
+    {
+        return false;
+    }
+    
+    // if the setdate in the main.ccp is correct
+    else
+    {
+        year=newYear;
+        month=newMonth;
+        day=newDay;
+    }
+
+    return true;
+    
+}
+
+int DateType::MonthIs()
+// Accessor function for data member month.
+{
+  return month;
+}
+
+int DateType::YearIs()
+// Accessor function for data member year.
+{
+  return year;
+}
+
+
+int DateType::DayIs()
+// Accessor function for data member day.
+{
+    return day;
+}
+
+
+void DateType::ReadDate()
+{
+    
+	cout << endl 
+         << "Read in the information of a date: " ;
+		 
+    // input dates
+	cout << endl << "The month is: "; 
+	cin >> month;
+	cout << endl << "The day is: "; 
+	cin >> day;
+	cout << endl << "The year is: "; 
+	cin >> year;
+    
+    // check if the inputs are correct
+    // if the input is false then it will keep looping until the input is correct
+    while (IsValidDate(month, day, year)==false)
+        
+    {
+        if (IsValidDate(month, day, year)==false)
+            
+        {
+            cout << "Not a valid date" << endl;
+            cout << "Please enter a valid date" << endl;
+            cout << endl << "The month is: ";
+            cin >> month;
+            cout << endl << "The day is: ";
+            cin >> day;
+            cout << endl << "The year is: ";
+            cin >> year;
+        }
+        
+    }
+    
+}
+
+void DateType::PrintDate()
+{
+    
+    // Display the date
+    cout << month << "/" << day << "/" << year << endl;
+    
+}
+
+
+int DateType::ComparedTo(DateType aDate)
+// Pre: Self and aDate have been initialized.
+// Post: return
+//  LESS, if self comes before aDate.
+//  EQUAL, if self is the same as aDate.
+//  GREATER, if self comes after aDate.
+{
+    // If tax year is less than groundhog year; return less
+    if (year<aDate.year)
+        
+        {
+            
+            return LESS;
+            
+        }
+    
+    // If tax year is greater than groundhog year; return greater
+    if (year>aDate.year)
+        
+        {
+            
+            return GREATER;
+            
+        }
+    
+    // If tax year is equal to the groundhog year
+    if (year==aDate.year)
+        
+        {
+            // if month is equal; we go one level down and compare day
+            if (month==aDate.month)
+                {
+                    
+                    // if days are equal; return equal
+                    if (day==aDate.day)
+                        
+                        {
+                            return EQUAL;
+                        
+                        }
+                    
+                    // if tax day less than groundhog day; return less
+                    else if (day<aDate.day)
+                        
+                        {
+                            
+                            return LESS;
+                            
+                        }
+                    
+                    // if tax day more than groundhog day; return more
+                    else if (day>aDate.day)
+                        
+                        {
+                            
+                            return GREATER;
+                            
+                        }
+                    
+                }
+            
+            // if month is less; return less
+            if (month<aDate.month)
+                
+            {
+                
+                return LESS;
+                
+            }
+        
+            // if month is greater; return greater
+            if (month>aDate.month)
+                
+            {
+                
+                return GREATER;
+                
+            }
+        }
+    return 1;
+}
+
+int DateType::ComparedCentury(DateType aDate)
+// Pre: Self and aDate have been initialized.
+// Post: return
+//	LESS, if the object itSelf comes before the century of aDate.
+//	EQUAL, if the object itSelf is in the same century as aDate.
+//	GREATER, if the object itSelf comes after the century of aDate.
+{
+	//Replace the return statement with your own code here
+ 
+        // Since its calcualted in integers, the values are rounded, making it easier to compare the difference and see which date comes first
+        // If year/100 and aDate.year/100 is divided by 100 and yields the same integer, then they are in the same century. Eg 125/100 == 137/100 => 1==1
+        if (year/100==aDate.year/100)
+            
+        {
+            
+            return EQUAL;
+            
+        }
+    
+        // if year/100>aDate.year/100. E.g. 562/100 > 354/100, which will be 5>3, then it will in a later century
+        else if (year/100>aDate.year/100)
+            
+        {
+            
+            return GREATER;
+            
+        }
+    
+        // if year/100<aDate.year/100. E.g. 125/100 > 354/100, which will be 1<3, then it will in an earlier century
+        else if (year/100<aDate.year/100)
+            
+        {
+            
+            return LESS;
+            
+        }
+
+    return 1;
+    
+}
+
+//
+void DateType::AdvanceDays(int NumDays)
+{
+    // You want to go back call NumDays
+    if (NumDays<0)
+    {
+        BackDays(-NumDays);
+        return;
+    }
+    
+    // the loop to add 1 day to days and see if it reaches the end of the month
+    while (NumDays>0)
+    {
+        NumDays=NumDays-1;
+        day++;
+
+        // for months with 31 days
+        if (month==1|| month==3||month==5||month==7||month==8||month==10)
+        {
+            // if it gets to the end of the month, then add one to month and then let day go back to 1
+            if (day>31)
+            {
+                day=1;
+                month=month+1;
+            }
+
+        }
+        
+        // for february
+        else if (month==2)
+        {
+            // This is to check if its a leap year
+            if ((year%4==0 && year%100!=0)|| year%400==0)
+            {
+                
+                // leap year then the month should end at 29
+                if (day>29)
+                {
+                    day=1;
+                    month=month+1;
+                }
+                
+            }
+                // not a leap year then the month should end at the 28
+                else
+                {
+                    if (day>28)
+                    {
+                        day=1;
+                        month=month+1;
+                    }
+                }
+            
+        }
+        
+        // for months with 31 days
+        else if (month==4|| month==6||month==9||month==11)
+        {
+            // if it gets to the end of the month, then add one to month and then let day go back to 1
+            if (day>30)
+            {
+                day=1;
+                month=month+1;
+            }
+            
+        }
+        
+        // for month of December
+        else if (month==12)
+        {
+            // if it reaches the end of December then the year should +1 and the month go back to January
+            if (day>31)
+            {
+                day=1;
+                year=year+1;
+                month=1;
+            }
+        }
+    
+        
+    }
+    
+}
+
+void DateType::BackDays(int NumDays)
+{
+    
+    // You want to go back call NumDays
+    if (NumDays<0)
+    {
+        AdvanceDays(-NumDays);
+        return;
+    }
+    
+    // if NumDays is more than 0, the loop will continue to run
+    while (NumDays>0)
+    {
+        
+        // NumDays gets subtracted by 1 each iteration
+        // days get subracted by 1 each iteration
+        NumDays=NumDays-1;
+        day=day-1;
+        {
+            
+            // if the month are these ones, then the month before these ones have 31 days
+            if (month==2|| month==4 || month==6 || month==8 || month==9 || month==11)
+            {
+                
+                // if the time reaches the beginning of the month, then the month gets subracted and then it goes to the previous month
+                if (day==0)
+                {
+                    day=31;
+                    month=month-1;
+                }
+                
+            }
+            
+            // if its march and it reaches the beginning of the month, then we should check if the previous month (February) has 29 or 28 days
+            if (month==3)
+            {
+                if (day==0)
+                {
+                    
+                    // This is to check if its a leap year
+                    if ((year%4==0 && year%100!=0)|| year%400==0)
+                    {
+                        day=29;
+                        month=month-1;
+                    }
+                    
+                    // not a leap year then the month should end at the 28
+                    else
+                    {
+                        day=28;
+                        month=month-1;
+                    }
+                }
+            }
+            
+            // if the month are these ones, then the month before these ones have 30 days
+            if (month==5 || month ==7 || month==10 || month==12)
+            {
+                if (day==0)
+                {
+                    day=30;
+                    month=month-1;
+                }
+            }
+            
+            // if the month is january and it reaches the beginning of the month, then we should subract 1 year and go back to December
+            if (month==1)
+            {
+                if (day==0)
+                {
+                    month=12;
+                    day=31;
+                    year=year-1;
+                }
+                
+            }
+            
+        }
+        
+    }
+
+        
+    return;
+}
+
+// function to check if the date is valid
+bool DateType::IsValidDate(int newMonth, int newDay, int newYear)
+{
+    // overall year to check
+    if (year>0)
+    {
+        // these months should have less than 31 days
+        if (newMonth==1|| newMonth==3||newMonth==5||newMonth==7||newMonth==8||newMonth==10||newMonth==12)
+        {
+            if (newDay>0 && newDay<=31)
+            {
+                return true;
+            }
+                else
+                {
+                    return false;
+                }
+            
+        }
+        
+        // for february
+        else if (newMonth==2)
+        {
+            // This is to check if its a leap year
+            // for leap year
+            if ((newYear%4==0 && newYear%100!=0)|| newYear%400==0)
+            {
+                
+                if (newDay<=29)
+                {
+                    return true;
+                }
+                    else
+                        
+                    {
+                        return false;
+                    }
+            }
+            
+            // for not a leap year
+            else if ((newYear%4!=0 && newYear%100==0)|| newYear%400!=0)
+            {
+                if (newDay<=28)
+                {
+                    return true;
+                }
+                
+                    else
+                    {
+                        return false;
+                    }
+            }
+            
+        }
+        
+        // for months with 30 days
+        else if (newMonth==4|| newMonth==6||newMonth==9||newMonth==11)
+        {
+            if (newDay<=30)
+            {
+                return true;
+            }
+                else
+                {
+                    return false;
+                }
+            
+        }
+        
+        // if anything else return false
+        else if (newMonth <0 || newMonth>0)
+        {
+            return false;
+        }
+        
+    }
+    
+        // if the day is less than 0; return false
+        else
+            
+            {
+                return false;
+            }
+    
+    return 1;
+    
+}
+
+
+    
